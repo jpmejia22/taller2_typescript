@@ -5,12 +5,12 @@ import { series } from './data.js';
 
 
 const seriesTbody: HTMLElement = document.getElementById('Series')!;
-//const btnfilterByName: HTMLElement = document.getElementById("button-filterByName")!;
-//const inputSearchBox: HTMLInputElement = <HTMLInputElement> document.getElementById("search-box")!;
 const mediaSeasonsElm: HTMLElement = document.getElementById("media-seasons")!;
 
-
-//btnfilterByName.onclick = () => applyFilterByName();
+const cardImage = document.getElementById('card-image') as HTMLImageElement;
+const cardTitle = document.getElementById('card-title')!;
+const cardSinopsis = document.getElementById('card-description')!;
+const cardLink = document.getElementById('card-link') as HTMLAnchorElement;
 
 renderCoursesInTable(series);
 
@@ -22,26 +22,23 @@ function renderCoursesInTable(series: Serie[]): void {
   console.log('Desplegando cursos');
   series.forEach((serie) => {
     let trElement = document.createElement("tr");
+    trElement.style.cursor = "pointer";
+    trElement.addEventListener('click', () => showSerieDetail(serie));
     trElement.innerHTML = `<td>${serie.id}</td>
-                           <td>${serie.name}</td>
+                           <td><span class="text-primary" style="text-decoration: underline;">${serie.name}</span></td>
                            <td>${serie.channel}</td>
                            <td>${serie.seasons}</td>`;
     seriesTbody.appendChild(trElement);
   });
 }
 
-//function applyFilterByName() { 
-  //let text = inputSearchBox.value;
-  //text = (text == null) ? '' : text;
-  //clearCoursesInTable();
-  //let coursesFiltered: Course[] = searchCourseByName(text, dataCourses);
-  //renderCoursesInTable(coursesFiltered);
-//}
-
-//function searchCourseByName(nameKey: string, courses: Course[]) {
-  //return nameKey === '' ? dataCourses : courses.filter( c => 
-    //c.name.match(nameKey));
-//}
+function showSerieDetail(serie: Serie): void {
+    cardImage.src = serie.image;
+    cardImage.alt = serie.name;
+    cardTitle.textContent = serie.name;
+    cardSinopsis.textContent = serie.sinopsis;
+    cardLink.href = serie.link;
+}
 
 
 function getMediaSeasons(series: Serie[]): number {
@@ -50,11 +47,3 @@ function getMediaSeasons(series: Serie[]): number {
   return totalSeasons/series.length;
 }
 
-//function clearCoursesInTable() {
-  //while (coursesTbody.hasChildNodes()) {
-    //if (coursesTbody.firstChild != null) {
-    //  coursesTbody.removeChild(coursesTbody.firstChild);
-     
-    //}
-  //}
-//}
